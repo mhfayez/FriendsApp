@@ -24,11 +24,11 @@ namespace FriendsApp.ViewModel
 
         public FriendViewModel()
         {
-            _friendCatalog =  new FriendCatalog();
+            //Use this line with a singleton implementation of FriendCatalog
+            //_friendCatalog = FriendCatalog.Instance;
 
-            //use when FriendsCatalog is Singleton
-           // _friendCatalog = FriendCatalog.Instance;
-
+            //use this i.e make an instance of FriendCatalog when using the non-singleton normal implementation of FriendCatalog 
+            _friendCatalog = new FriendCatalog();
             AddContactCommand = new RelayCommand(AddFriend);
             _deletionCommand = new DeleteCommand(_friendCatalog, this);
         }
@@ -45,12 +45,20 @@ namespace FriendsApp.ViewModel
             
         }
 
+
         public Friend SelectedFriend
         {
-            get => _friendCatalog.SelectedItem;
+            //Use this with the static SelectedFriend property
+            //get => FriendCatalog.SelectedFriend;
+            //Use this with the normal SelectedFriend property: using instance of FriendsCatalog
+            get => _friendCatalog.SelectedFriend;
             set
             {
-                _friendCatalog.SelectedItem = value;
+                //Use this with the static SelectedFriend property
+               // FriendCatalog.SelectedFriend = value;
+
+                //Use this with the normal SelectedFriend property: using instance of FriendsCatalog
+                _friendCatalog.SelectedFriend = value;
                 OnPropertyChanged();
                 _deletionCommand.RaiseCanExecuteChanged();
             }
