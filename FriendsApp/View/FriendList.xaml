@@ -1,0 +1,94 @@
+﻿<Page
+    x:Class="FriendsApp.View.FriendList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Custom="using:Microsoft.Xaml.Interactivity"
+    xmlns:Custom1="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:FriendsApp.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:FriendsApp.ViewModel"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="36" />
+            <Setter Property="Width" Value="300" />
+            <Setter Property="Margin" Value="20,20,20,20" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Margin" Value="10,10,10,10" />
+        </Style>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <viewModel:FriendViewModel />
+    </Page.DataContext>
+
+
+    <Page.Background>
+        <ThemeResource ResourceKey="ApplicationPageBackgroundThemeBrush" />
+    </Page.Background>
+
+    <Grid>
+
+        <StackPanel Orientation="Horizontal">
+            <!--  List Part  -->
+            <StackPanel>
+                <ListView ItemsSource="{Binding FriendsCollection}" SelectedItem="{Binding SelectedFriend, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image
+                                    Width="80"
+                                    Height="80"
+                                    Source="{Binding ImageLink}" />
+                                <TextBlock
+                                    Margin="10,10,10,10"
+                                    VerticalAlignment="Center"
+                                    FontSize="18"
+                                    Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Margin="10"
+                        Command="{Binding DeletionCommand}"
+                        Content="Delete" />
+                    <Button Content="Edit">
+                        <Custom:Interaction.Behaviors>
+                            <Custom1:EventTriggerBehavior EventName="Click">
+                                <Custom1:NavigateToPageAction TargetPage="FriendsApp.View.FriendEdit" />
+                            </Custom1:EventTriggerBehavior>
+                        </Custom:Interaction.Behaviors>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+            <!--  Details Part  -->
+            <StackPanel>
+                <StackPanel
+                    Margin="10,10,10,10"
+                    BorderBrush="DarkGray"
+                    BorderThickness="3,3,3,3"
+                    Orientation="Horizontal">
+                    <Image
+                        Width="200"
+                        Height="200"
+                        Margin="10,10,10,10"
+                        VerticalAlignment="Top"
+                        Source="{Binding SelectedFriend.ImageLink}" />
+                    <StackPanel Margin="20,20,20,20">
+                        <TextBlock Style="{StaticResource TextBlockStyle}" Text="{Binding SelectedFriend.Name}" />
+                        <TextBlock Style="{StaticResource TextBlockStyle}" Text="{Binding SelectedFriend.Country}" />
+                        <TextBlock Style="{StaticResource TextBlockStyle}" Text="{Binding SelectedFriend.Phone}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Page>
